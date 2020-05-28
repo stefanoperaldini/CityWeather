@@ -1,0 +1,129 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  white-space: normal;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav > a {
+  text-decoration: none;
+  color: inherit;
+}
+/* CONTAINER
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* HEADER
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.page-header {
+  background: var(--lgray);
+  padding: 20px;
+}
+
+.page-header nav {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* MAIN
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+  flex-grow: 1;
+}
+
+
+.boxAccount {
+  border: 2px solid var(--onegray);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.boxAccount > * {
+  padding: 1rem 2.9rem;
+}
+
+/* HOME
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.centered-container-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 310px;
+  flex-grow: 1;
+  flex-wrap: wrap;
+}
+
+.centeredComponent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.allWidth {
+  min-width: 90vw;
+}
+
+/* MQ
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+@media screen and (min-width: 928px) {
+  html {
+    font-size: 16px;
+  }
+
+  /* HEADER */
+  .page-header {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    opacity: 0.98;
+  }
+
+  main {
+    padding-top: 100px;
+  }
+
+  .page-header nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* HOME */
+  .minWidth {
+    min-width: 80vw;
+  }
+}
