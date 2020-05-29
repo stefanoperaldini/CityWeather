@@ -28,12 +28,16 @@ export function Home() {
     console.log("handleCityData");
     getCityInfo(city)
       .then(response => {
+        console.log("SERVICE RESPONSE DATA:");
+        console.log(JSON.stringify(response.data));
         if (response.data.totalResultsCount === 0){
           setError("name", "backend", "City not found");
           return;
         }
         getWeatherCity(`north=${response.data.geonames[0].bbox.north}&south=${response.data.geonames[0].bbox.south}&east=${response.data.geonames[0].bbox.east}&west=${response.data.geonames[0].bbox.west}&username=${process.env.REACT_APP_SERVICE_USER_NAME}`)
         .then(response => {
+          console.log("SERVICE RESPONSE DATA:");
+          console.log(JSON.stringify(response.data));
           const weatherObservations = response.data.weatherObservations;
           const date = new Date();
           const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0, "date":`${date.getUTCDate()}/${date.getMonth()}/${date.getFullYear()}`};
@@ -113,16 +117,14 @@ export function Home() {
       ) :
       (
         <section className="allWidth boxAccount">
-           <h1 className="f-s-xxl txtCenter">{city}</h1>
-           <h2>{weatherCity.date}</h2>
-           <p className="f-s-l txtCenter">
-             <ul>
-                <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
-                <li>{`Humidity: ${weatherCity.humidity}%`}</li>
-                <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
-             </ul>
-           </p>
-           </section>
+          <h1 className="f-s-xxl txtCenter">{city}</h1>
+          <h2>{weatherCity.date}</h2>
+          <ul className="f-s-l txtCenter">
+            <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
+            <li>{`Humidity: ${weatherCity.humidity}%`}</li>
+            <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
+          </ul>
+        </section>
       )
         }
       </main>
