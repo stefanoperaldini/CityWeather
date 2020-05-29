@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { CityWeather } from "./pages/CityWeather";
 import { NotFound } from "./pages/NotFound";
 
 function App() {
@@ -14,9 +13,6 @@ function App() {
             </Route>
             <Route exact path="/home">
               <Home />
-            </Route>
-            <Route path="/city-weather">
-              <CityWeather />
             </Route>
             <Route path="/not-found">
               <NotFound />

@@ -16,11 +16,11 @@ export function Home() {
   const { handleSubmit, register, errors, formState, setError } = useForm({
     mode: "onBlur"
   });
-  //const history = useHistory();
+  
+  const [storedCities, setStoredCities] = React.useState([]);
 
-  useEffect(() => {
-    console.log("Read cities stored");
-    // read cities stored
+  useEffect(() => {                   ;
+    setStoredCities( JSON.parse(localStorage.getItem('cityHistory')) || [] );
     return;
   }, []);
 
@@ -28,22 +28,31 @@ export function Home() {
     console.log("handleCityData");
     getCityInfo(city)
       .then(response => {
-        // FIXME check geonames
+        if (response.data.totalResultsCount === 0){
+          setError("name", "backend", "City not found");
+          return;
+        }
         getWeatherCity(`north=${response.data.geonames[0].bbox.north}&south=${response.data.geonames[0].bbox.south}&east=${response.data.geonames[0].bbox.east}&west=${response.data.geonames[0].bbox.west}&username=${process.env.REACT_APP_SERVICE_USER_NAME}`)
         .then(response => {
           const weatherObservations = response.data.weatherObservations;
           const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0,};
           console.log(weatherObservations);
           const numWeatherObservations = weatherObservations.length;
-          for(let i = 0; i < numWeatherObservations; i++) {
-            weatherCity.temperature += parseInt(weatherObservations[i].temperature);
-            weatherCity.humidity += parseInt(weatherObservations[i].humidity);
-            weatherCity.windSpeed += parseInt(weatherObservations[i].windSpeed);
+          if (numWeatherObservations !== 0){
+            for(let i = 0; i < numWeatherObservations; i++) {
+              weatherCity.temperature += parseInt(weatherObservations[i].temperature);
+              weatherCity.humidity += parseInt(weatherObservations[i].humidity);
+              weatherCity.windSpeed += parseInt(weatherObservations[i].windSpeed);
+            }
+            weatherCity.temperature = Math.round(weatherCity.temperature / numWeatherObservations);
+            weatherCity.humidity = Math.round(weatherCity.humidity / numWeatherObservations);
+            weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWeatherObservations);
+          } else {
+            weatherCity.temperature = "-";
+            weatherCity.humidity = "-";
+            weatherCity.windSpeed = "-";
           }
-          weatherCity.temperature = Math.round(weatherCity.temperature / numWeatherObservations);
-          weatherCity.humidity = Math.round(weatherCity.humidity / numWeatherObservations);
-          weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWeatherObservations);
-
+          localStorage.setItem("cityHistory", JSON.stringify([city, ...storedCities.filter(elementCity => elementCity !== city),]));
           setWeatherCity(weatherCity);
         });
       })
@@ -55,6 +64,7 @@ export function Home() {
     <React.Fragment>
       <Header />
       <main className="centered-container-home m-t-md p-r-md p-l-md">
+      {!weatherCity ? (
         <section className="allWidth centered-container">
           <h1 className="f-s-xxl txtCenter">
             Find the city
@@ -66,7 +76,7 @@ export function Home() {
             <div>
               <input
                 className="searchCity"
-                list="citiesName"
+                list="storedCities"
                 ref={register(validatorCityName)}
                 name="name"
                 id="name"
@@ -75,6 +85,13 @@ export function Home() {
                 placeholder="City name"
                 onChange={e => setCity(e.target.value)}
               ></input>
+               <datalist id="storedCities">
+                {storedCities.map(element => (
+                  <option key={element} value={element}>
+                    {element}
+                  </option>
+                ))}
+              </datalist>
               {errors.name && (
                 <span className="errorMessageCity">
                   {errors.name.message}
@@ -92,20 +109,19 @@ export function Home() {
             </div>
           </form>
         </section>
-
-        {weatherCity && 
-          (
-           <section className="allWidth centered-container">
+      ) :
+      (
+        <section className="allWidth centered-container">
            <h1 className="f-s-xxl txtCenter">{city}</h1>
            <p className="f-s-l txtCenter">
              <ul>
-                <li>{`Temperature:${weatherCity.temperature}`}</li>
-                <li>{`Humidity:${weatherCity.humidity}`}</li>
-                <li>{`Wind:${weatherCity.windSpeed}`}</li>
+                <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
+                <li>{`Humidity: ${weatherCity.humidity}%`}</li>
+                <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
              </ul>
            </p>
            </section>
-          )
+      )
         }
       </main>
     </React.Fragment>
