@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { validatorCityName } from "./pagesUtils";
 import { Header } from "../components/Header";
+import MapContainer from "../components/MapContainer"
 import { getCityInfo } from "../http/cityService";
 import { getWeatherCity } from "../http/weatherService";
 
@@ -124,6 +125,7 @@ export function Home() {
             <li>{`Humidity: ${weatherCity.humidity}%`}</li>
             <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
           </ul>
+          <MapContainer />
         </section>
       )
         }
