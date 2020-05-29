@@ -35,7 +35,8 @@ export function Home() {
         getWeatherCity(`north=${response.data.geonames[0].bbox.north}&south=${response.data.geonames[0].bbox.south}&east=${response.data.geonames[0].bbox.east}&west=${response.data.geonames[0].bbox.west}&username=${process.env.REACT_APP_SERVICE_USER_NAME}`)
         .then(response => {
           const weatherObservations = response.data.weatherObservations;
-          const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0,};
+          const date = new Date();
+          const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0, "date":`${date.getUTCDate()}/${date.getMonth()}/${date.getFullYear()}`};
           console.log(weatherObservations);
           const numWeatherObservations = weatherObservations.length;
           if (numWeatherObservations !== 0){
@@ -111,8 +112,9 @@ export function Home() {
         </section>
       ) :
       (
-        <section className="allWidth centered-container">
+        <section className="allWidth boxAccount">
            <h1 className="f-s-xxl txtCenter">{city}</h1>
+           <h2>{weatherCity.date}</h2>
            <p className="f-s-l txtCenter">
              <ul>
                 <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
