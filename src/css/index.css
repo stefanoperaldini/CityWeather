@@ -64,11 +64,6 @@ nav > a {
   cursor: pointer;
 }
 
-fieldset {
-  border: 1px solid var(--lgray);
-  padding: 0 1rem;
-}
-
 select {
   background: transparent;
   border: none;
@@ -141,9 +136,9 @@ select {
   grid-template-columns: 325px;
   grid-template-rows: 5rem 1.5rem 3.5rem;
   grid-template-areas:
-    "searchCity"
-    "errorMessageCity"
-    "buttonSearch"
+    'searchCity'
+    'errorMessageCity'
+    'buttonSearch';
 }
 
 .searchCity {
@@ -197,11 +192,13 @@ to {background-position:30px 0,left}
   /* HOME */
 
   .searchComponent {
-    grid-template-columns: 20rem 12rem 20rem;
-    grid-template-rows: 7rem 5rem 1.5rem;
-    grid-template-areas:
-    "searchCity", "buttonSearch"
-    "errorMessageCity"
+    grid-template-columns: 20rem 12rem;
+    grid-template-rows: 5rem 1.5rem;
+  }
+
+  .buttonSearch {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .minWidth {

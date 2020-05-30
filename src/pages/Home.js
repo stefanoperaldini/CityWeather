@@ -68,7 +68,7 @@ export function Home() {
   };
   return (
     <React.Fragment>
-      <main className="centered-container-home m-t-md p-r-md p-l-md">
+      <main className="centered-container-home">
       {!weatherCity ? (
         <section className="allWidth centered-container">
           <h1 className="f-s-xxl txtCenter">
@@ -78,7 +78,7 @@ export function Home() {
             Get access to the city weather!
           </p>
           <form onSubmit={handleSubmit(handleCityData)}>
-            <div className="searchComponent">
+            <div className="searchComponent m-t-xl">
               <input
                 className="searchCity"
                 list="storedCities"
