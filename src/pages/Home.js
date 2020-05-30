@@ -26,7 +26,6 @@ export function Home() {
   }, []);
 
   const handleCityData = formData => {
-    console.log("handleCityData");
     getCityInfo(city)
       .then(response => {
         console.log("SERVICE RESPONSE DATA:");
@@ -42,7 +41,6 @@ export function Home() {
           const weatherObservations = response.data.weatherObservations;
           const date = new Date();
           const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0, "date":`${date.getUTCDate()}/${date.getMonth()}/${date.getFullYear()}`};
-          console.log(weatherObservations);
           const numWeatherObservations = weatherObservations.length;
           if (numWeatherObservations !== 0){
             for(let i = 0; i < numWeatherObservations; i++) {
@@ -119,7 +117,7 @@ export function Home() {
       (
         <section className="allWidth boxAccount">
           <h1 className="f-s-xxl txtCenter">{city}</h1>
-          <h2>{weatherCity.date}</h2>
+          {weatherCity.date}
           <ul className="f-s-l txtCenter">
             <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
             <li>{`Humidity: ${weatherCity.humidity}%`}</li>
