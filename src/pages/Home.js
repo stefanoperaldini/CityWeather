@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
 import { validatorCityName } from "./pagesUtils";
-import { Header } from "../components/Header";
 import MapContainer from "../components/MapContainer"
+import { BarTemperature } from "../components/BarTemperature";
 import { getCityInfo } from "../http/cityService";
 import { getWeatherCity } from "../http/weatherService";
+import imageSearch from "../img/search.png"
 
 /**
  * Home page
@@ -44,17 +46,17 @@ export function Home() {
           const numWeatherObservations = weatherObservations.length;
           if (numWeatherObservations !== 0){
             for(let i = 0; i < numWeatherObservations; i++) {
-              weatherCity.temperature += parseInt(weatherObservations[i].temperature);
-              weatherCity.humidity += parseInt(weatherObservations[i].humidity);
-              weatherCity.windSpeed += parseInt(weatherObservations[i].windSpeed);
+              weatherCity.temperature += parseFloat(weatherObservations[i].temperature);
+              weatherCity.humidity += parseFloat(weatherObservations[i].humidity);
+              weatherCity.windSpeed += parseFloat(weatherObservations[i].windSpeed);
             }
             weatherCity.temperature = Math.round(weatherCity.temperature / numWeatherObservations);
             weatherCity.humidity = Math.round(weatherCity.humidity / numWeatherObservations);
             weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWeatherObservations);
           } else {
-            weatherCity.temperature = "-";
-            weatherCity.humidity = "-";
-            weatherCity.windSpeed = "-";
+            weatherCity.temperature = NaN;
+            weatherCity.humidity = NaN;
+            weatherCity.windSpeed = NaN;
           }
           localStorage.setItem("cityHistory", JSON.stringify([city, ...storedCities.filter(elementCity => elementCity !== city),]));
           setWeatherCity(weatherCity);
@@ -66,18 +68,17 @@ export function Home() {
   };
   return (
     <React.Fragment>
-      <Header />
       <main className="centered-container-home m-t-md p-r-md p-l-md">
       {!weatherCity ? (
         <section className="allWidth centered-container">
           <h1 className="f-s-xxl txtCenter">
-            Find the city
+            Welcome to de CityWeather Application
           </h1>
           <p className="f-s-l txtCenter">
-            Get access to the city weather
+            Get access to the city weather!
           </p>
           <form onSubmit={handleSubmit(handleCityData)}>
-            <div>
+            <div className="searchComponent">
               <input
                 className="searchCity"
                 list="storedCities"
@@ -101,7 +102,7 @@ export function Home() {
                   {errors.name.message}
                 </span>
               )}
-              <div className="btn-container buttonSearch">
+              <div className="buttonSearch">
                 <button
                   type="submit"
                   className="btn"
@@ -115,15 +116,27 @@ export function Home() {
         </section>
       ) :
       (
-        <section className="allWidth boxAccount">
+        <section className="allWidth">
           <h1 className="f-s-xxl txtCenter">{city}</h1>
           {weatherCity.date}
+          <Link to="/">
+          <img src={imageSearch} title="Image search" alt="Go to home"/>
+        </Link>
+        { weatherCity.temperature ? (
+          <React.Fragment>
           <ul className="f-s-l txtCenter">
-            <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
-            <li>{`Humidity: ${weatherCity.humidity}%`}</li>
-            <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
-          </ul>
-          <MapContainer />
+          <li>{`Temperature: ${weatherCity.temperature}`}&#176;C</li>
+          <li>{`Humidity: ${weatherCity.humidity}%`}</li>
+          <li>{`Wind: ${weatherCity.windSpeed} km/h`}</li>
+        </ul>
+        <BarTemperature />
+        </React.Fragment>
+        ):
+        (
+          <p>Weather data not available at this time</p>
+          )
+        }
+        <MapContainer />
         </section>
       )
         }
