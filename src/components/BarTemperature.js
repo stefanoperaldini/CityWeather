@@ -26,9 +26,6 @@ export function BarTemperature({temperature}) {
   } else if (widthProgess < 0){
     widthProgess *= -1;
   }
-
-  console.log(temperature);
-  console.log(widthProgess);
  
   return (
       <React.Fragment>
@@ -38,9 +35,3 @@ export function BarTemperature({temperature}) {
     </React.Fragment>
   );
 }
-
-// red
-// orange 
-//yelloworange
-//yellow
-// blue 

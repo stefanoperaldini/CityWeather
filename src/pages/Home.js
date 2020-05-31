@@ -53,14 +53,45 @@ export function Home() {
             setError("name", "backend", `${city}, wheather not available`);
             return;
           }
+          let numTemperature =0
+          let numHumidity = 0;
+          let numWindSpeed = 0;
+
           for(let i = 0; i < numWeatherObservations; i++) {
-            weatherCity.temperature += parseFloat(weatherCity.listStation[i].temperature);
-            weatherCity.humidity += parseFloat(weatherCity.listStation[i].humidity);
-            weatherCity.windSpeed += parseFloat(weatherCity.listStation[i].windSpeed);
+            if (weatherCity.listStation[i].hasOwnProperty("temperature")){
+              weatherCity.temperature += parseFloat(weatherCity.listStation[i].temperature);
+              console.log(weatherCity.temperature);
+              numTemperature += 1;
+
+            }
+            if (weatherCity.listStation[i].hasOwnProperty("humidity")){
+              weatherCity.humidity += parseFloat(weatherCity.listStation[i].humidity);
+              numHumidity += 1;
+            }
+            if (weatherCity.listStation[i].hasOwnProperty("windSpeed")){
+              weatherCity.windSpeed += parseFloat(weatherCity.listStation[i].windSpeed);
+              numWindSpeed += 1;
+            }
           }
-          weatherCity.temperature = Math.round(weatherCity.temperature / numWeatherObservations);
-          weatherCity.humidity = Math.round(weatherCity.humidity / numWeatherObservations);
-          weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWeatherObservations);
+
+          if (numTemperature !== 0){
+            console.log(numTemperature);
+            weatherCity.temperature = Math.round(weatherCity.temperature / numTemperature);
+          }else{
+            weatherCity.temperature = "--"
+          }
+
+          if (numHumidity !== 0){
+            weatherCity.humidity = Math.round(weatherCity.humidity / numHumidity);
+          }else{
+            weatherCity.humidity = "--"
+          }
+
+          if (numWindSpeed !== 0){
+            weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWindSpeed);
+          }else{
+            weatherCity.windSpeed = "--"
+          }
          
           // Save city searched in the localStorage (menagement history)
           localStorage.setItem("cityHistory", JSON.stringify([city, ...storedCities.filter(elementCity => elementCity !== city),]));
