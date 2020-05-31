@@ -102,13 +102,30 @@ select {
   flex-grow: 1;
 }
 
-.boxAccount {
+.results-container {
+  display: flex;
+  border: 0.1rem solid lightgray;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 350px;
+  flex-grow: 1;
+}
+
+.box {
   border: 2px solid var(--onegray);
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.box > * {
+  padding: 1rem 3rem;
+}
+
+.bordered {
+  border: none;
 }
 
 /* HOME
@@ -123,7 +140,7 @@ select {
   flex-wrap: wrap;
 }
 
-.allWidth {
+.minWidth {
   min-width: 90vw;
 }
 
@@ -139,6 +156,44 @@ select {
     'searchCity'
     'errorMessageCity'
     'buttonSearch';
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 2fr, 1fr;
+  grid-template-rows: 5rem 2rem 5rem 5rem;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.results-grid > * {
+  padding: 1rem 1rem;
+}
+  
+.div1 { 
+  grid-area: 1 / 1 / 2 / 2; 
+}
+.div2 { 
+  justify-self: center;
+  grid-area:  1 / 2 / 2 / 3; 
+}
+
+.div3 { 
+  grid-area: 2 / 1 / 3 / 2; 
+}
+
+.div4 { 
+  justify-self: start;
+  grid-area: 3 / 1 / 4 / 2; 
+}
+
+.div5 { 
+  justify-self: center;
+  grid-area: 3 / 2 / 4 / 3; 
+}
+
+.div6 { 
+  grid-area: 4 / 1 / 5 / 3; 
 }
 
 .searchCity {
@@ -161,24 +216,63 @@ select {
   grid-area: errorMessageCity;
 }
 
-.progressbar {
-  height: 2rem;
-  border-radius: 1em;
-  margin:5px;
-  background: 
-    linear-gradient(-45deg,
-      rgba(255, 255, 255, 0.15) 25%,transparent 25%, 
-      transparent 50%, rgba(255, 255, 255, 0.15) 50%, 
-      rgba(255, 255, 255, 0.15) 75%,transparent 75%) 
-    left/30px 30px repeat-x,
-    linear-gradient(to right, blue 0%, yellow 50%, red 100%) left/var(--p,100%) fixed,
-    lightgray;
-box-shadow:inset 0px -2px 5px rgba(0, 0, 0, 0.5);
-animation: change 1s linear infinite;
+.meter { 
+  height: 5px;
+  position: relative;
+  background: #f3efe6;
+  overflow: hidden;
 }
-@keyframes change {
-from {background-position:0 0,left}
-to {background-position:30px 0,left}
+
+.meter span {
+  display: block;
+  height: 100%;
+}
+
+.progress {
+  background-color: #e4c465;
+  -webkit-animation: progressBar 3s ease-in-out;
+  -webkit-animation-fill-mode:both; 
+  -moz-animation: progressBar 3s ease-in-out;
+  -moz-animation-fill-mode:both; 
+}
+
+@keyframes progressBar {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@-webkit-keyframes progressBar {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@-moz-keyframes progressBar {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+.red {
+  background-color:#f63a0f; 
+}
+
+.orange {
+  background-color:#f27011;
+}
+
+.yelloworange {
+  background-color:#f2b01e;
+}
+
+.yellow {
+  background-color:#f2d31b;
+}
+
+.blue {
+  background-color:#1E90FF;
+}
+
+.darkblue {
+  background-color:#00008B; 
 }
 
 /* MQ
@@ -202,6 +296,11 @@ to {background-position:30px 0,left}
   }
 
   .minWidth {
-    min-width: 80vw;
+    min-width: 70vw;
+  }
+
+  .bordered {
+    border: 2px solid var(--onegray);
+    border-radius: 15px;
   }
 }

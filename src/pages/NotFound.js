@@ -9,7 +9,7 @@ export function NotFound() {
   return (
     <React.Fragment>
       <main className="centered-container">
-        <section className="boxAccount">
+        <section className="box">
           <h1>Page not found</h1>
           <p>Sorry, we can't find the page you're looking for.</p>
           <Link to="/Home">Go back Home</Link>

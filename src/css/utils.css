@@ -138,8 +138,18 @@
   padding-top: var(--space-lg);
 }
 
-.flex {
+.flexCol {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .overflow-hidden {
@@ -153,3 +163,7 @@
 .txtRight {
   text-align: right;
 }
+
+.capitalize {
+  text-transform: capitalize;
+  }

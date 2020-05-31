@@ -5,10 +5,11 @@ const validatorCityName = {
     message: "Minimun is 2 characters"
   },
   maxLength: {
-    value: 60,
-    message: "Maximun is 60 characters"
+    value: 40,
+    message: "Maximun is 40 characters"
   }
 };
+
 
 export {
   validatorCityName

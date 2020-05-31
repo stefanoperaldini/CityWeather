@@ -1,71 +1,53 @@
-import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, {useState} from 'react';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
-const MapContainer = () => {
-  
+export function MapContainer({weatherCity}) {
+  const [ selectedStation, setSelectedStation ] = useState({});
+ 
   const mapStyles = {        
-    height: "300px",
-    width: "350px"};
+    height: "20rem",
+    width: "350px",
+    margin: "1rem 1rem",
+    align: "center"
+  };
   
   const defaultCenter = {
-    lat: 41.3851, lng: 2.1734
+    lat: parseFloat(weatherCity.lat), lng: parseFloat(weatherCity.lng)
   }
 
-  const locations = [
-    {
-      name: "Location 1",
-      location: { 
-        lat: 41.3954,
-        lng: 2.162 
-      },
-    },
-    {
-      name: "Location 2",
-      location: { 
-        lat: 41.3917,
-        lng: 2.1649
-      },
-    },
-    {
-      name: "Location 3",
-      location: { 
-        lat: 41.3773,
-        lng: 2.1585
-      },
-    },
-    {
-      name: "Location 4",
-      location: { 
-        lat: 41.3797,
-        lng: 2.1682
-      },
-    },
-    {
-      name: "Location 5",
-      location: { 
-        lat: 41.4055,
-        lng: 2.1915
-      },
-    }
-  ];
+  const onSelect = item => {
+    setSelectedStation(item);
+  }
   
   return (
      <LoadScript
         key={`${process.env.REACT_APP_GOOGLE_MAPS_KEY}`}>
         <GoogleMap
           mapContainerStyle={mapStyles}
-          zoom={13}
+          zoom={8}
           center={defaultCenter}>
           {
-            locations.map(item => {
+            weatherCity.listStation.map(station => {
               return (
-              <Marker key={item.name} position={item.location}/>
+              <Marker key={station.stationName} 
+                position={{ "lat":parseFloat(station.lat), "lng": parseFloat(station.lng) }}
+                onClick={() => onSelect(station) }/>
               )
             })
           }
+          {
+            selectedStation.lat && 
+            (
+              <InfoWindow
+              position={{ "lat":parseFloat(selectedStation.lat), "lng": parseFloat(selectedStation.lng) }}
+              clickable={true}
+              onCloseClick={() => setSelectedStation({})}
+            >
+              <p>{selectedStation.stationName}</p>
+            </InfoWindow>
+            )
+         }
           </GoogleMap>
      </LoadScript>
   )
 }
-
-export default MapContainer;
