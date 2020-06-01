@@ -64,34 +64,11 @@ nav > a {
   cursor: pointer;
 }
 
-select {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--dark);
-  height: 30px;
-  padding: 5px;
-  width: 250px;
-}
-
-/* CONTAINER
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-/* HEADER
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-
-.page-header {
-  background: var(--lgray);
-  padding: 20px;
-}
-
-/* MAIN
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .centered-container {
   display: flex;
@@ -104,7 +81,7 @@ select {
 
 .results-container {
   display: flex;
-  border: 0.1rem solid lightgray;
+  border: 0.1rem solid var(--lgray);
   flex-direction: column;
   justify-content: center;
   min-height: 350px;
@@ -127,9 +104,6 @@ select {
 .bordered {
   border: none;
 }
-
-/* HOME
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .centered-container-home {
   display: flex;
@@ -156,6 +130,26 @@ select {
     'searchCity'
     'errorMessageCity'
     'buttonSearch';
+}
+
+.searchCity {
+  grid-area: searchCity;
+  background-image: url("../img/search.png");
+  background-size: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: 0.5rem center;
+  padding-left: 2.5rem;
+}
+
+.buttonSearch {
+  grid-area: buttonSearch;
+  align-self: center;
+}
+
+.errorMessageCity {
+  font-size: 0.8rem;
+  color: var(--ko);
+  grid-area: errorMessageCity;
 }
 
 .results-grid {
@@ -196,30 +190,14 @@ select {
   grid-area: 4 / 1 / 5 / 3; 
 }
 
-.searchCity {
-  grid-area: searchCity;
-  background-image: url("../img/search.png");
-  background-size: 1.5rem;
-  background-repeat: no-repeat;
-  background-position: 0.5rem center;
-  padding-left: 2.5rem;
-}
 
-.buttonSearch {
-  grid-area: buttonSearch;
-  align-self: center;
-}
-
-.errorMessageCity {
-  font-size: 0.8rem;
-  color: var(--ko);
-  grid-area: errorMessageCity;
-}
+/* Progress bar
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .meter { 
   height: 5px;
   position: relative;
-  background: #f3efe6;
+  background: var(--lgray);
   overflow: hidden;
 }
 
@@ -229,7 +207,6 @@ select {
 }
 
 .progress {
-  background-color: #e4c465;
   -webkit-animation: progressBar 3s ease-in-out;
   -webkit-animation-fill-mode:both; 
   -moz-animation: progressBar 3s ease-in-out;
@@ -252,27 +229,27 @@ select {
 }
 
 .red {
-  background-color:#f63a0f; 
+  background-color:var(--red); 
 }
 
 .orange {
-  background-color:#f27011;
+  background-color:var(--orange);
 }
 
 .yelloworange {
-  background-color:#f2b01e;
+  background-color:var(--yelloworange);
 }
 
 .yellow {
-  background-color:#f2d31b;
+  background-color:var(--yelloworange);
 }
 
 .blue {
-  background-color:#1E90FF;
+  background-color:var(--blue);
 }
 
 .darkblue {
-  background-color:#00008B; 
+  background-color:var(--darkblue); 
 }
 
 /* MQ
@@ -282,8 +259,6 @@ select {
   html {
     font-size: 16px;
   }
-
-  /* HOME */
 
   .searchComponent {
     grid-template-columns: 20rem 12rem;

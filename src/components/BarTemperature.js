@@ -4,12 +4,9 @@ export function BarTemperature({temperature}) {
   let color = "darkblue";
   let widthProgess = temperature * 2;
 
-
   if (widthProgess > 100){
     widthProgess = 100;
-  }
-
-  if (widthProgess < -100){
+  }else if (widthProgess < -100){
     widthProgess = -100;
   }
 

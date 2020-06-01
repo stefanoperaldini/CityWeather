@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { validatorCityName } from "./pagesUtils";
+import { validatorCityName, menageStationData} from "./pagesUtils";
 import { MapContainer } from "../components/MapContainer"
 import { BarTemperature } from "../components/BarTemperature";
 import { getCityInfo } from "../http/cityService";
@@ -34,12 +34,15 @@ export function Home() {
         // Log to console service response data
         console.log("SERVICE RESPONSE DATA:");
         console.log(JSON.stringify(response.data));
+
         if (response.data.totalResultsCount === 0 || !response.data.geonames[0].hasOwnProperty("bbox")){
           setError("name", "backend", "City not found");
           return;
         }
+
         const date = new Date();
-        const weatherCity = {"temperature":0, "humidity":0, "windSpeed":0, "lat": response.data.geonames[0].lat, "lng":response.data.geonames[0].lng, "date":`${date.getUTCDate()}/${date.getMonth()+1}/${date.getFullYear()}`, "listStation": null};
+        let weatherCity = {"temperature":0, "humidity":0, "windSpeed":0, "lat": response.data.geonames[0].lat, "lng":response.data.geonames[0].lng, "date":`${date.getUTCDate()}/${date.getMonth()+1}/${date.getFullYear()}`, "listStation": null};
+
         // Call wheather service
         getWeatherCity(`north=${response.data.geonames[0].bbox.north}&south=${response.data.geonames[0].bbox.south}&east=${response.data.geonames[0].bbox.east}&west=${response.data.geonames[0].bbox.west}&username=${process.env.REACT_APP_SERVICE_USER_NAME}`)
         .then(response => {
@@ -49,52 +52,17 @@ export function Home() {
 
           weatherCity.listStation = response.data.weatherObservations;
           const numWeatherObservations = weatherCity.listStation.length;
+
           if (numWeatherObservations === 0){
             setError("name", "backend", `${city}, wheather not available`);
             return;
           }
-          let numTemperature =0
-          let numHumidity = 0;
-          let numWindSpeed = 0;
 
-          for(let i = 0; i < numWeatherObservations; i++) {
-            if (weatherCity.listStation[i].hasOwnProperty("temperature")){
-              weatherCity.temperature += parseFloat(weatherCity.listStation[i].temperature);
-              console.log(weatherCity.temperature);
-              numTemperature += 1;
-
-            }
-            if (weatherCity.listStation[i].hasOwnProperty("humidity")){
-              weatherCity.humidity += parseFloat(weatherCity.listStation[i].humidity);
-              numHumidity += 1;
-            }
-            if (weatherCity.listStation[i].hasOwnProperty("windSpeed")){
-              weatherCity.windSpeed += parseFloat(weatherCity.listStation[i].windSpeed);
-              numWindSpeed += 1;
-            }
-          }
-
-          if (numTemperature !== 0){
-            console.log(numTemperature);
-            weatherCity.temperature = Math.round(weatherCity.temperature / numTemperature);
-          }else{
-            weatherCity.temperature = "--"
-          }
-
-          if (numHumidity !== 0){
-            weatherCity.humidity = Math.round(weatherCity.humidity / numHumidity);
-          }else{
-            weatherCity.humidity = "--"
-          }
-
-          if (numWindSpeed !== 0){
-            weatherCity.windSpeed = Math.round(weatherCity.windSpeed / numWindSpeed);
-          }else{
-            weatherCity.windSpeed = "--"
-          }
+          weatherCity = menageStationData(weatherCity);
          
           // Save city searched in the localStorage (menagement history)
           localStorage.setItem("cityHistory", JSON.stringify([city, ...storedCities.filter(elementCity => elementCity !== city),]));
+          
           setWeatherCity(weatherCity);
         });
       })
@@ -164,12 +132,10 @@ export function Home() {
               <h1 className="div1 f-s-xxl capitalize f-c-fourgray">{city}</h1>
               <div className="div3 f-c-fourgray">{ weatherCity.date }</div>
               <div className="div4 f-s-xxl">{weatherCity.temperature}&#176;C</div>
-              <div className="div5">
-                <ul className="f-s-s m-t-lg">
-                  <li className="f-c-fourgray">{`Humidity: ${weatherCity.humidity}%`}</li>
-                  <li className="f-c-fourgray">{`Wind: ${weatherCity.windSpeed} km/h`}</li>
-                </ul>
-              </div>
+              <ul className="div5 f-s-s m-t-lg">
+                <li className="f-c-fourgray">{`Humidity: ${weatherCity.humidity}%`}</li>
+                <li className="f-c-fourgray">{`Wind: ${weatherCity.windSpeed} km/h`}</li>
+              </ul>
               <div className="div6"><BarTemperature temperature={weatherCity.temperature} /></div>
             </div>
             <div className="flexRow" >
